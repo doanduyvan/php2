@@ -39,9 +39,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     load(0);
                     if(data.status == 1){
-                        addcategory.reset();
+                        form.reset();
                         toast({
                             title: "Success!",
                             message: "Add Category Success",

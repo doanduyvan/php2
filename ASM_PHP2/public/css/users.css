@@ -42,3 +42,7 @@
 .dv_account:hover .div1{
     display: flex;
 }
+
+.oneline{
+    white-space: nowrap;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
   <!-- Required meta tags -->
@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <link rel="icon" href="img/favicon.png" type="image/png" />
   <title>Eiser ecommerce</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
   <!-- Bootstrap CSS -->
@@ -28,10 +29,90 @@
   <!-- my css -->
 
   <link rel="stylesheet" href="<?= WEB_ROOT ?>public/css/users.css" />
+  <link rel="stylesheet" href="public/css/toast_loading.css">
+  <script src="public/js/toast_loading.js"></script>
 
 </head>
 
 <body>
+
+  <!-- toast -->
+  <div id="toasts"></div>
+  <!-- loading -->
+  <div class="loading" id="loading">
+    <div class="load">
+      <div class="load1">
+        <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+          <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+          <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+          <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+          <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .dvoverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      /* display: none; */
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+
+    .dvoverlay .form-confirm {
+      background-color: white;
+      box-shadow: 0 0 10px gray;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border-radius: 10px;
+      gap: 30px;
+    }
+
+    .dv_btn {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .dv_btn button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #71CD14;
+      color: white;
+      cursor: pointer;
+      min-width: 90px;
+    }
+
+    .dvoverlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+
+  <div class="dvoverlay" id="dvoverlayconfirm">
+    <div class="form-confirm">
+      <h2 class="from-confirm-title">Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?</h2>
+      <div class="dv_btn">
+        <button id="dvbtnyes">Có</button>
+        <button id="dvbtnno">Không</button>
+      </div>
+    </div>
+  </div>
+
   <!--================Header Menu Area =================-->
   <header class="header_area">
     <div class="top_menu">
@@ -121,22 +202,46 @@
                     </a>
                   </li>
 
+                  <style>
+                    .acart {
+                      position: relative;
+                    }
+
+                    .acart .pcart {
+                      position: absolute;
+                      width: 20px;
+                      height: 20px;
+                      top: 15px;
+                      right: -12px;
+                      background-color: white;
+                      box-shadow: 0 0 2px gray;
+                      color: #71CD14;
+                      border-radius: 50%;
+                      font-weight: 600;
+                    }
+                  </style>
+
                   <li class="nav-item">
-                    <a href="#" class="icons">
-                      <i class="ti-shopping-cart"></i>
+                    <a href="shop/cart" class="icons acart">
+
+                      <i class="ti-shopping-cart">
+                        <p class="pcart" id="quantityproduct">
+                          <?= $_SESSION['cart']['quantity'] ?? "0" ?>
+                        </p>
+                      </i>
 
                     </a>
                   </li>
 
                   <li class="nav-item">
-                    <a href="#" class="icons">
+                    <a href="" class="icons">
                       <i class="ti-heart" aria-hidden="true"></i>
                     </a>
                   </li>
 
                   <li class="nav-item dv_account">
 
-                    <a href="#" class="icons">
+                    <a href="" class="icons">
                       <i class="ti-user" aria-hidden="true"></i>
                     </a>
 
@@ -149,6 +254,7 @@
                     ?>
                       <div class="div1">
                         <p><?= $_SESSION['account']['name'] ?></p>
+                        <a href="order">My Order</a>
                         <a href="auth/signout">Log out</a>
                       </div>
                     <?php

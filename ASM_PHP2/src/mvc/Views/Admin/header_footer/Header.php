@@ -38,7 +38,7 @@
             <div class="flex items-center gap-[10px] px-[10px] py-[20px]">
                 <div class="w-[60px]"><img class="w-full aspect-square rounded-[50%] object-cover" src="public/img/avatar-default.png" alt=""></div>
                 <div class="flex-1">
-                    <p class="font-bold">Đoàn Duy Vấn</p>
+                    <p class="font-bold"><?= strtoupper($_SESSION['accountAdmin']['name']) ?></p>
                     <p class="text-gray-300 text-[14px]">Admin</p>
                 </div>
             </div>
@@ -46,10 +46,11 @@
             <!-- menu -->
             <div class="scroll w-full max-h-[50%]">
                 <ul class="menu_ul">
-                    <li class="<?= isset($currentMenu) && $currentMenu == 1 ? "active" : "" ?>"><a href="admin/home">Dasboard</a></li>
+                    <li class="<?= isset($currentMenu) && $currentMenu == 1 ? "active" : "" ?>"><a href="admin/dashboard">Dashboard</a></li>
                     <li class="<?= isset($currentMenu) && $currentMenu == 2 ? "active" : "" ?>"><a href="admin/category">Category</a></li>
                     <li class="<?= isset($currentMenu) && $currentMenu == 3 ? "active" : "" ?>"><a href="admin/brand">Brands</a></li>
                     <li class="<?= isset($currentMenu) && $currentMenu == 4 ? "active" : "" ?>"><a href="admin/products">Products</a></li>
+                    <li class="<?= isset($currentMenu) && $currentMenu == 5 ? "active" : "" ?>"><a href="admin/order">Orders</a></li>
                 </ul>
             </div>
 
@@ -59,7 +60,7 @@
                 <div class="border-t border-gray-400 mx-[10px]"></div>
                 <ul class="fix_info">
                     <li class="mt-[10px] px-[20px]"><a class="block p-[10px]" href="">My Profile</a></li>
-                    <li class="px-[20px]"><a class="block p-[10px]" href="">Log Out</a></li>
+                    <li class="px-[20px]"><a class="block p-[10px]" href="admin/auth/signout">Log Out</a></li>
 
                 </ul>
             </div>

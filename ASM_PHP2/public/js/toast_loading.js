@@ -3,8 +3,8 @@ function toast({
     title = '',
     message = '',
     type = '',
-    duration = 3000
-}){
+    duration = 2000
+}) {
     const toasts = document.getElementById('toasts');
     const icons = {
         success: 'fas fa-check-circle',
@@ -27,8 +27,8 @@ function toast({
         toasts.removeChild(toast);
     }, duration);
 
-    toast.onclick = function(e){
-        if(e.target.closest('.close')){
+    toast.onclick = function (e) {
+        if (e.target.closest('.close')) {
             toasts.removeChild(toast);
             clearTimeout(removetimeout);
         }
@@ -39,11 +39,65 @@ function toast({
 
 // loading
 
-function load(bool){
+function load(bool) {
     let loading = document.getElementById('loading');
-    if(bool == 1){
+    if (bool == 1) {
         loading.style.display = 'block';
-    }else{
+    } else {
         loading.style.display = 'none';
     }
+}
+
+
+// comfirm 
+
+
+function myconfirm(title) {
+    return new Promise((resolve, reject) => {
+        const comfirm = document.getElementById('dvoverlayconfirm');
+        const formconfirm = comfirm.querySelector('.form-confirm');
+        comfirm.classList.add('active');
+        comfirm.querySelector('.from-confirm-title').textContent = title;
+
+        const clickoutside = (e) => {
+                if (!formconfirm.contains(e.target)) {
+                comfirm.classList.remove('active');
+                resolve(false);
+                cleanclick();
+            }
+        }
+
+        const clickyes = (e) => {
+            comfirm.classList.remove('active');
+            resolve(true);
+            cleanclick();
+            e.stopPropagation();
+        }
+
+        const clickno = () => {
+            comfirm.classList.remove('active');
+            resolve(false);
+            cleanclick();
+        }
+
+
+        const cleanclick = () => {
+            comfirm.removeEventListener('click', clickoutside);
+            comfirm.querySelector('#dvbtnyes').removeEventListener('click', clickyes);
+            comfirm.querySelector('#dvbtnno').removeEventListener('click', clickno);
+        }
+
+        comfirm.addEventListener('click',clickoutside);
+        comfirm.querySelector('#dvbtnyes').addEventListener('click', clickyes);
+        comfirm.querySelector('#dvbtnno').addEventListener('click',clickno);
+    
+
+        
+    });
+}
+
+
+
+function format(number) {
+    return Number(number).toLocaleString();
 }
