@@ -20,7 +20,8 @@ class ProductsModel extends BaseModel
     }
 
     function getbyidproduct($id)
-    {
+    {   
+        $this->updateviews($id);
         return $this->getbyid($this->table, $id);
     }
 
@@ -39,14 +40,13 @@ class ProductsModel extends BaseModel
 
     function addproduct($data, $img, $img_details)
     {
-        // $test['infor'] = "dòng 26 trong ProductsModel.php";
-        // $test['imgdetails'] = $img_details;
-        // echo json_encode($test); die;
 
         $isnum = ["price", "price_sale", "stock_quantity", "productcategory_id", "brands_id"];
         $data['created_at'] = NOW;
 
         if (!empty($img['name'])) {
+            $randomfour = rand(1000, 9999);
+            $img['name'] = "P" . $randomfour . $img['name'];
             $data['img_url'] = $img['name'];
             $this->moveFile($img['name'], $img['tmp_name'], $this->pathImg);
         }
@@ -59,6 +59,8 @@ class ProductsModel extends BaseModel
     function addimgdetail($id, $img_details)
     {
         foreach ($img_details['name'] as $key => $value) {
+            $randomfour = rand(1000, 9999);
+            $value = "P" . $randomfour . $value;
             $data = [
                 'product_id' => $id,
                 'img_url' => $value
@@ -75,6 +77,8 @@ class ProductsModel extends BaseModel
         $isnum = ["price", "price_sale", "stock_quantity", "productcategory_id", "brands_id"];
 
         if (!empty($img['name'])) {
+            $randomfour = rand(1000, 9999);
+            $img['name'] = "P" . $randomfour . $img['name'];
             $data['img_url'] = $img['name'];
             $this->moveFile($img['name'], $img['tmp_name'], $this->pathImg);
         }
@@ -84,6 +88,15 @@ class ProductsModel extends BaseModel
         }
 
         return $this->editrow($this->table, $id, $data, $isnum);
+    }
+
+    function updateviews($id){
+        $product = $this->getbyid($this->table,$id);
+        if(!empty($product)){
+            $oldview = $product['views'];
+            $sql = "UPDATE $this->table SET views = ".($oldview + 1)." WHERE id = $id";
+            return $this->query($sql);
+        }
     }
 
     // delete

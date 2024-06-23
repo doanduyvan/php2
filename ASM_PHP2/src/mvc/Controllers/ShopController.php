@@ -9,16 +9,20 @@ class ShopController extends Controller{
     private $data = [];
     private $productsModel = null;
     private $categoryModel = null;
-
+    private $brandModel = null;
     public function __construct()
     {
         $this->categoryModel = new \Models\CategoryModel();
         $this->productsModel = new \Models\ProductsModel();
+        $this->brandModel = new \Models\BrandModel();
+        $this->data['Menu'] = 2;
         parent::Users();
     }
 
     public function index(){
         $this->data['products'] = $this->productsModel->getallproduct();
+        $this->data['category'] = $this->categoryModel->getallcategory();
+        $this->data['brands'] = $this->brandModel->getallbrand();
         $this->Render("Users/shop/ShopView",$this->data);
     }
 

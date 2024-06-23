@@ -10,6 +10,7 @@ class HomeController extends Controller{
     private $data = [];
     function __construct()
     {
+        $this->data['Menu'] = 1;
        $this->productsModel = new \Models\ProductsModel();
        parent::Users();
     }

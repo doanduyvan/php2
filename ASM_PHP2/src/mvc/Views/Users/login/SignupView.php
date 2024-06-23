@@ -88,6 +88,18 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(form);
+
+            let pass = formData.get('password');
+            let cpass = formData.get('confirmpassword');
+            if(pass != cpass){
+                toast({
+                    title: 'Warning',
+                    message: 'Password does not match',
+                    type: 'warning'
+                });
+                return;
+            }
+
             load(1);
             fetch('auth/adduserpost', {
                 method: 'POST',
@@ -102,6 +114,9 @@
                         message: data.message,
                         type: 'success'
                     });
+                    setTimeout(() => {
+                        window.location.href = 'home';
+                    }, 1000);
                 }else{
                     toast({
                         title: 'Error',

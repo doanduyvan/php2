@@ -189,6 +189,9 @@
                     message: 'Update product success',
                     type: 'success'
                 });
+                setTimeout(() => {
+                    window.location.href = 'admin/products';
+                }, 1000);
             }else{
                 toast({
                     title: 'Error',

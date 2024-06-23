@@ -12,7 +12,8 @@ class Routers{
             "shop" => ["index","showproduct","cart","checkout","addtocartpost"],
             "cart" => ["addcartpost"],
             "blog" => ["index"],
-            "order" => ["index"]
+            "order" => ["index"],
+            "contact" => ["index"],
             ];
         }
 
